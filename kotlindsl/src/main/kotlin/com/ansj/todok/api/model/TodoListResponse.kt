@@ -1,6 +1,6 @@
 package com.ansj.todok.api.model
 
-import com.ansj.todok.api.domain.Todo
+import com.ansj.todok.domain.Todo
 import com.fasterxml.jackson.annotation.JsonIgnore
 
 

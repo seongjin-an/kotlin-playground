@@ -1,4 +1,4 @@
-package com.ansj.todok.api.domain
+package com.ansj.todok.domain
 
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -8,7 +8,7 @@ import javax.persistence.*
 class Todo(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
+    var id: Long? = 0,
 
     @Column(name = "title")
     var title: String,
@@ -21,17 +21,17 @@ class Todo(
     var done: Boolean,
 
     @Column(name = "created_at")
-    val createdAt: LocalDateTime,
+    var createdAt: LocalDateTime,
 
     @Column(name = "updated_at")
-    var updatedAt: LocalDateTime,
+    var updatedAt: LocalDateTime? = null,
 ) {
 
-
-    fun update(title: String, description: String, done: Boolean?) {
+    fun update(title: String, description: String, done: Boolean) {
         this.title = title
         this.description = description
-        this.done = done != null && done
+        this.done = done
         updatedAt = LocalDateTime.now()
     }
+
 }

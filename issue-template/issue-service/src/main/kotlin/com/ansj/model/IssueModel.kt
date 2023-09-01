@@ -1,5 +1,6 @@
 package com.ansj.model
 
+import com.ansj.domain.Comment
 import com.ansj.domain.Issue
 import com.ansj.domain.enums.IssuePriority
 import com.ansj.domain.enums.IssueStatus
@@ -17,6 +18,7 @@ data class IssueRequest(
 
 data class IssueResponse(
     val id: Long,
+    val comments: List<CommentResponse> = emptyList(),
     val summary: String,
     val description: String,
     val userId: Long,
@@ -33,6 +35,7 @@ data class IssueResponse(
         operator fun invoke(issue: Issue) = with(issue) {
             IssueResponse(
                 id = id!!,
+                comments = comments.sortedByDescending(Comment::id).map(Comment::toResponse),
                 summary = summary,
                 description = description,
                 userId = userId,

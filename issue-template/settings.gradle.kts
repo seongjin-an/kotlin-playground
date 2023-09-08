@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "issue-template"
-include("issue-service")
+include("issue-service", "user-service")

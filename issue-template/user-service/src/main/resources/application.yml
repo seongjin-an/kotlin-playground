@@ -1,2 +1,8 @@
 server:
   port: 28080
+
+jwt:
+  issuer: jara
+  subject: auth
+  expires-time: 3600
+  secret: my-secret

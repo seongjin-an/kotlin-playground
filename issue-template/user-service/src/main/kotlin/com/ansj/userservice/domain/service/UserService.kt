@@ -6,6 +6,7 @@ import com.ansj.userservice.domain.model.SignInRequest
 import com.ansj.userservice.domain.model.SignInResponse
 import com.ansj.userservice.domain.model.SignUpRequest
 import com.ansj.userservice.domain.repository.UserRepository
+import com.ansj.userservice.exception.InvalidJwtTokenException
 import com.ansj.userservice.exception.PasswordNotMatchedException
 import com.ansj.userservice.exception.UserExistException
 import com.ansj.userservice.exception.UserNotFoundException
@@ -64,5 +65,20 @@ class UserService (
 
     suspend fun logout(token: String) {
         cacheManager.awaitEvict(token)
+    }
+
+    suspend fun getByToken(token: String): User {
+        val cachedUser = cacheManager.awaitGetOrPut(key = token, ttl = CACHE_TTL) {
+            // 캐시가 유효하지 않은 경우 동작.
+            val decodedJWT = JWTUtils.decode(token, jwtProperties.secret, jwtProperties.issuer)
+
+            val userId: Long = decodedJWT.claims["userId"]?.asLong() ?: throw InvalidJwtTokenException()
+            get(userId)
+        }
+        return cachedUser
+    }
+
+    suspend fun get(userId: Long): User {
+        return userRepository.findById(userId) ?: throw UserNotFoundException()
     }
 }

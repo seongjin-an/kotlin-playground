@@ -1,0 +1,1 @@
+localStorage.setItem('userServiceUrl', 'http://localhost:28080')

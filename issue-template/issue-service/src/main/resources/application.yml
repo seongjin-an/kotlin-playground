@@ -1,2 +1,5 @@
 server:
   port: 18080
+
+auth:
+  url: http://localhost:28080/api/v1/users/me
